@@ -28,7 +28,7 @@
 #include "jfr/utilities/jfrSpinlockHelper.hpp"
 #include "logging/log.hpp"
 
-constexpr static const JfrSamplerParams _disabled_params = {
+static const JfrSamplerParams _disabled_params = {
                                                              0, // sample points per window
                                                              0, // window duration ms
                                                              0, // window lookback count
@@ -102,22 +102,22 @@ bool JfrEventThrottler::accept(JfrEventId event_id, int64_t timestamp /* 0 */) {
  * when the JfrAdaptiveSampler engine is calcualting an expected weigthed moving average (EWMA) over the population.
  * Technically, it determines the alpha coefficient in the EMWA formula.
  */
-constexpr static const size_t default_window_lookback_count = 25; // 25 windows == 5 seconds (for default window duration of 200 ms)
+static const size_t default_window_lookback_count = 25; // 25 windows == 5 seconds (for default window duration of 200 ms)
 
 /*
  * Rates lower than or equal to the 'low rate upper bound', are considered special.
  * They will use a single window of whatever duration, because the rates are so low they
  * do not justify the overhead of more frequent window rotations.
  */
-constexpr static const intptr_t low_rate_upper_bound = 9;
-constexpr static const size_t  window_divisor = 5;
+static const intptr_t low_rate_upper_bound = 9;
+static const size_t  window_divisor = 5;
 
-constexpr static const int64_t MINUTE = 60 * MILLIUNITS;
-constexpr static const int64_t TEN_PER_1000_MS_IN_MINUTES = 600;
-constexpr static const int64_t HOUR = 60 * MINUTE;
-constexpr static const int64_t TEN_PER_1000_MS_IN_HOURS = 36000;
-constexpr static const int64_t DAY = 24 * HOUR;
-constexpr static const int64_t TEN_PER_1000_MS_IN_DAYS = 864000;
+static const int64_t MINUTE = 60 * MILLIUNITS;
+static const int64_t TEN_PER_1000_MS_IN_MINUTES = 600;
+static const int64_t HOUR = 60 * MINUTE;
+static const int64_t TEN_PER_1000_MS_IN_HOURS = 36000;
+static const int64_t DAY = 24 * HOUR;
+static const int64_t TEN_PER_1000_MS_IN_DAYS = 864000;
 
 inline void set_window_lookback(JfrSamplerParams& params) {
   if (params.window_duration_ms <= MILLIUNITS) {
@@ -137,7 +137,7 @@ inline void set_low_rate(JfrSamplerParams& params, int64_t event_sample_size, in
 }
 
 // If the throttler is off, it accepts all events.
-constexpr static const int64_t event_throttler_off = -2;
+static const int64_t event_throttler_off = -2;
 
 /*
  * Set the number of sample points and window duration.
