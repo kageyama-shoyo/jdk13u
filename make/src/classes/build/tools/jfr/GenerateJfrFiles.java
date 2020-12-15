@@ -154,6 +154,7 @@ public class GenerateJfrFiles {
         boolean startTime;
         boolean periodic;
         boolean cutoff;
+        boolean throttle;
     }
 
     static class FieldElement {
@@ -226,6 +227,7 @@ public class GenerateJfrFiles {
                 eventtType.startTime = getBoolean(attributes, "startTime", true);
                 eventtType.periodic = attributes.getValue("period") != null;
                 eventtType.cutoff = getBoolean(attributes, "cutoff", false);
+                eventtType.throttle = getBoolean(attributes, "throttle", false);
                 currentType = eventtType;
                 break;
             case "Field":
@@ -333,6 +335,7 @@ public class GenerateJfrFiles {
             out.write("struct jfrNativeEventSetting {");
             out.write("  jlong  threshold_ticks;");
             out.write("  jlong  cutoff_ticks;");
+            out.write("  jlong  throttle;");
             out.write("  u1     stacktrace;");
             out.write("  u1     enabled;");
             out.write("  u1     pad[6]; // Because GCC on linux ia32 at least tries to pack this.");
@@ -545,6 +548,7 @@ public class GenerateJfrFiles {
           out.write("  static const bool hasStackTrace = " + event.stackTrace + ";");
           out.write("  static const bool isInstant = " + !event.startTime + ";");
           out.write("  static const bool hasCutoff = " + event.cutoff + ";");
+          out.write("  static const bool hasThrottle = " + event.throttle + ";");
           out.write("  static const bool isRequestable = " + event.periodic + ";");
           out.write("  static const JfrEventId eventId = Jfr" + event.name + "Event;");
           out.write("");

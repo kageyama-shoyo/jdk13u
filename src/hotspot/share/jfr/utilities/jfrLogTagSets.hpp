@@ -52,6 +52,7 @@
   JFR_LOG_TAG(jfr, system, setting) \
   JFR_LOG_TAG(jfr, system, bytecode) \
   JFR_LOG_TAG(jfr, system, parser) \
+  JFR_LOG_TAG(jfr, system, throttle) \
   JFR_LOG_TAG(jfr, system, metadata) \
   JFR_LOG_TAG(jfr, metadata) \
   JFR_LOG_TAG(jfr, event) \
