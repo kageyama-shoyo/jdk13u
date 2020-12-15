@@ -89,7 +89,7 @@ bool JfrAdaptiveSampler::sample(int64_t timestamp) {
 }
 
 inline const JfrSamplerWindow* JfrAdaptiveSampler::active_window() const {
-  return Atomic::load(&_active_window);
+  return Atomic::load(&_active_window); // load_acquire is used, not sure if there is any major diff.
 }
 
 inline int64_t now() {
@@ -139,7 +139,7 @@ void JfrAdaptiveSampler::rotate(const JfrSamplerWindow* expired) {
 
 inline void JfrAdaptiveSampler::install(const JfrSamplerWindow* next) {
   assert(next != active_window(), "invariant");
-  // Atomic::release_store(&_active_window, next);
+  // Look for alternative - Atomic::release_store(&_active_window, next);
 }
 
 const JfrSamplerWindow* JfrAdaptiveSampler::configure(const JfrSamplerParams& params, const JfrSamplerWindow* expired) {
